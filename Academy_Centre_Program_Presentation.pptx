@@ -1,0 +1,59 @@
+<pptx>
+  <presentation>
+    <slide>
+      <title>أهداف البرنامج ومؤشرات الأداء الرئيسية</title>
+      <background color="#f0f0f0" accent="#1B6B4F"/>
+      <content boxes="left">
+        <box title="الأهداف">
+          <ul>
+            <li>زيادة عدد اللاعبين</li>
+            <li>تفعيل الأندية</li>
+            <li>استمرارية التدريب</li>
+            <li>تطوير الأداء</li>
+          </ul>
+        </box>
+        <box title="المؤشرات">
+          <ul>
+            <li>إجمالي اللاعبين (~250)</li>
+            <li>معدل الاستمرارية (85%)</li>
+            <li>نسبة الحضور</li>
+            <li>عدد الحصص المنفذة</li>
+          </ul>
+        </box>
+      </content>
+      <sidebar color="#1B6B4F">
+        <header>المعلومات الأساسية</header>
+        <schedule>أول وثالث خميس من كل شهر 7:00 - 10:00 صباحاً</schedule>
+        <keypoints>
+          <li>•</li>
+        </keypoints>
+      </sidebar>
+    </slide>
+    <slide>
+      <title>نظام التتبع</title>
+      <background color="#f0f0f0" accent="#1B6B4F"/>
+      <sections>
+        <section title="تسجيل اللاعبين">
+          <ul>
+            <li>تسجيل اللاعبين لكل مركز</li>
+            <li>تسجيل الحضور لكل حصة</li>
+            <li>تحديث البيانات بعد كل Session</li>
+          </ul>
+        </section>
+        <section title="التقارير والتحليل">
+          <ul>
+            <li>نشر الخطط التدريبية</li>
+            <li>تقارير أسبوعية وشهرية</li>
+          </ul>
+        </section>
+        <section title="لوحة التحكم">
+          <ul>
+            <li>Dashboard مباشر</li>
+            <li>تلقائية KPIs</li>
+          </ul>
+        </section>
+      </sections>
+      <footer>Real-time Tracking → Clear Numbers → Better Decisions</footer>
+    </slide>
+  </presentation>
+</pptx>
