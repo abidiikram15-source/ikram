@@ -48,7 +48,7 @@ function adminSchoolOptions(){
 let adminRows=[];
 async function loadAdminData(){
  if(profile?.role!=='admin')return;
- let q=SB.from('session_reports').select('id,school_id,session_date,execution,note,submitted_at,schools(code,name_ar,regions(name_ar)),program_sessions(week_no,day_no,title_ar),attendance(present),evidence(id)');
+ let q=SB.from('session_reports').select('id,school_id,session_date,execution,note,submitted_at,schools(code,name_ar,regions(name_ar)),program_sessions(week_no,day_no,title_ar),attendance(present),evidence(id,storage_path)');
  if(adminSchool.value)q=q.eq('school_id',adminSchool.value);
  if(adminFrom.value)q=q.gte('session_date',adminFrom.value);
  if(adminTo.value)q=q.lte('session_date',adminTo.value);
@@ -66,7 +66,12 @@ async function loadAdminData(){
  const present=att.filter(x=>x.present).length;
  const pics=rows.reduce((n,x)=>n+(x.evidence?.length||0),0);
  const executed=rows.filter(x=>x.execution!=='not_completed').length;const possibleSessions=schoolIds.size*36;const progress=possibleSessions?Math.min(100,executed*100/possibleSessions):0;aStudents.textContent=(studs||[]).length;aReports.textContent=executed;aProgress.textContent=(Math.round(progress*10)/10)+'%';aAttendance.textContent=att.length?Math.round(present*100/att.length)+'%':'0%';aEvidence.textContent=pics;
- adminTable.innerHTML='<table><tr><th>التاريخ</th><th>المنطقة</th><th>المدرسة</th><th>الأسبوع/الحصة</th><th>التنفيذ</th><th>الحضور</th><th>الصور</th><th>الملاحظات</th></tr>'+rows.map(x=>{let a=x.attendance||[],p=a.filter(z=>z.present).length;return `<tr><td>${x.session_date}</td><td>${x.schools?.regions?.name_ar||''}</td><td>${x.schools?.name_ar||''}</td><td>${x.program_sessions?.week_no||''}/${x.program_sessions?.day_no||''}</td><td>${x.execution==='completed'?'مكتمل':x.execution==='partial'?'مكتمل جزئيًا':'غير منفذ'}</td><td>${p}/${a.length}</td><td>${x.evidence?.length||0}</td><td>${x.note||''}</td></tr>`}).join('')+'</table>'
+ adminTable.innerHTML='<table><tr><th>التاريخ</th><th>المنطقة</th><th>المدرسة</th><th>الأسبوع/الحصة</th><th>التنفيذ</th><th>الحضور</th><th>الصور</th><th>الملاحظات</th></tr>'+rows.map(x=>{let a=x.attendance||[],p=a.filter(z=>z.present).length;return `<tr><td>${x.session_date}</td><td>${x.schools?.regions?.name_ar||''}</td><td>${x.schools?.name_ar||''}</td><td>${x.program_sessions?.week_no||''}/${x.program_sessions?.day_no||''}</td><td>${x.execution==='completed'?'مكتمل':x.execution==='partial'?'مكتمل جزئيًا':'غير منفذ'}</td><td>${p}/${a.length}</td><td>${x.evidence?.length||0}${x.evidence?.length?` <button class="s" style="padding:5px 8px" onclick="viewEvidence('${x.id}')">عرض</button>`:''}</td><td>${x.note||''}</td></tr>`}).join('')+'</table>'
+}
+async function viewEvidence(reportId){
+ const row=adminRows.find(x=>x.id===reportId),items=row?.evidence||[];
+ if(!items.length)return alert('لا توجد صور محفوظة لهذه الحصة.');
+ for(const item of items){const {data,error}=await SB.storage.from('session-evidence').createSignedUrl(item.storage_path,3600);if(!error&&data?.signedUrl)window.open(data.signedUrl,'_blank')}
 }
 function exportAdminExcel(){
  if(!adminRows.length)return alert('لا توجد بيانات للتصدير حسب الفلاتر الحالية');
