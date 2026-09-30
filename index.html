@@ -78,10 +78,16 @@ async function viewEvidence(reportId){
 }
 function closeEvidence(){evidenceModal.classList.add('hidden');evidenceGallery.innerHTML=''}
 
-function exportAdminExcel(){
+async function exportAdminExcel(){
  if(!adminRows.length)return alert('لا توجد بيانات للتصدير حسب الفلاتر الحالية');
- const out=adminRows.map(x=>{let a=x.attendance||[],p=a.filter(z=>z.present).length;return {'التاريخ':x.session_date,'المنطقة':x.schools?.regions?.name_ar||'','رمز المدرسة':x.schools?.code||'','المدرسة':x.schools?.name_ar||'','الأسبوع':x.program_sessions?.week_no||'','الحصة':x.program_sessions?.day_no||'','التنفيذ':x.execution==='completed'?'مكتمل':x.execution==='partial'?'مكتمل جزئيًا':'غير منفذ','الحضور':p,'إجمالي المسجلين بالحصة':a.length,'عدد الصور':x.evidence?.length||0,'الملاحظات':x.note||''}});
- const ws=XLSX.utils.json_to_sheet(out);ws['!cols']=[{wch:12},{wch:16},{wch:12},{wch:34},{wch:9},{wch:9},{wch:16},{wch:10},{wch:22},{wch:10},{wch:35}];
+ const out=[];
+ for(const x of adminRows){
+  let a=x.attendance||[],p=a.filter(z=>z.present).length,links=[];
+  for(const e of (x.evidence||[])){const {data,error}=await SB.storage.from('session-evidence').createSignedUrl(e.storage_path,604800);if(!error&&data?.signedUrl)links.push(data.signedUrl)}
+  out.push({'التاريخ':x.session_date,'المنطقة':x.schools?.regions?.name_ar||'','رمز المدرسة':x.schools?.code||'','المدرسة':x.schools?.name_ar||'','الأسبوع':x.program_sessions?.week_no||'','الحصة':x.program_sessions?.day_no||'','التنفيذ':x.execution==='completed'?'مكتمل':x.execution==='partial'?'مكتمل جزئيًا':'غير منفذ','الحضور':p,'إجمالي المسجلين بالحصة':a.length,'عدد الصور':x.evidence?.length||0,'الصورة 1':links[0]||'','الصورة 2':links[1]||'','صور إضافية':links.slice(2).join(' | '),'الملاحظات':x.note||''})
+ }
+ const ws=XLSX.utils.json_to_sheet(out);ws['!cols']=[{wch:12},{wch:16},{wch:12},{wch:34},{wch:9},{wch:9},{wch:16},{wch:10},{wch:22},{wch:10},{wch:45},{wch:45},{wch:45},{wch:35}];
+ for(let r=2;r<=out.length+1;r++){for(const col of ['K','L']){const cell=ws[col+r];if(cell&&cell.v){cell.l={Target:cell.v,Tooltip:'فتح صورة التوثيق'};cell.v=col==='K'?'فتح الصورة 1':'فتح الصورة 2'}}}
  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'تقرير الإدارة');XLSX.writeFile(wb,'Shuttle_Time_Admin_Report.xlsx')
 }
 async function addStudent(){let payload={school_id:studentSchool.value,full_name:studentName.value.trim(),gender:studentGender.value,grade:studentGrade.value};if(!payload.full_name)return alert('أدخل الاسم');let {error}=await SB.from('students').insert(payload);if(error)return alert(error.message);studentName.value='';studentGrade.value='';await dashboard();if(reportSchool.value===payload.school_id)await loadSchoolStudents();alert('تم حفظ الطالب/ة ✓')}
