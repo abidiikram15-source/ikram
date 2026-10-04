@@ -25,8 +25,21 @@ input:focus,select:focus,textarea:focus{outline:2px solid #f3b4b7;border-color:v
 th{background:#f6f6f6;color:#3a3d42}td,th{border-bottom-color:#ededed}
 .tabs{border-bottom:1px solid var(--st-line);padding-bottom:12px}
 @media(max-width:600px){header{padding:11px 16px}.brand-ar{font-size:17px}.brand-mark{font-size:10px;padding:6px 8px}.brand-en{display:none}}
-</style><style>.hero-en{margin:2px 0 6px!important;font-size:14px!important;color:#6d7178!important;direction:ltr;text-align:right}</style></head>
-<body><header><div class="brand-ar"><span class="brand-mark">SHUTTLE TIME</span><span>برنامج وقت الريشة</span></div><div class="brand-en" id="who">BWF SHUTTLE TIME • SAUDI ARABIA</div></header><main class="wrap">
+</style><style>.hero-en{margin:2px 0 6px!important;font-size:14px!important;color:#6d7178!important;direction:ltr;text-align:right}</style><style>
+.st-header{min-height:94px;padding:12px max(4%,24px);border-bottom:0;background:#fff;box-shadow:0 4px 18px rgba(0,0,0,.07);position:relative}
+.st-header:after{content:"";position:absolute;bottom:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#d71920 0 68%,#26282d 68% 100%)}
+.st-lockup{display:flex;align-items:center;gap:18px}.st-wordmark{position:relative;direction:ltr;color:#d71920;font-weight:900;font-size:22px;line-height:.82;letter-spacing:-1px;padding:8px 58px 8px 8px;min-width:178px}.st-wordmark span{display:block}.st-wordmark em{position:absolute;right:0;bottom:11px;border:2px solid #d71920;padding:3px 5px;font-size:8px;font-style:normal;transform:rotate(-7deg);letter-spacing:.4px;background:#fff}.st-program-name{border-right:1px solid #dedede;padding-right:18px}.st-program-name b{display:block;font-size:17px;color:#26282d}.st-program-name small{display:block;direction:ltr;text-align:right;color:#777;font-weight:700;font-size:10px;margin-top:4px;letter-spacing:.4px}.sbf-lockup{height:56px;display:flex;align-items:center;justify-content:flex-start;max-width:300px}.sbf-lockup img{max-height:52px;max-width:100%;object-fit:contain}
+.wrap{max-width:1180px;margin-top:28px}.admin-hero{padding:24px 26px;border-radius:18px;background:linear-gradient(120deg,#fff 0 72%,#fff0f0 72%);box-shadow:0 6px 22px rgba(0,0,0,.045)}.admin-hero h2{font-size:24px;margin-bottom:3px}.hero-en{font-weight:700;letter-spacing:.25px}.account-chip{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.grid .stat{min-height:104px;padding:17px 19px;background:linear-gradient(180deg,#fff,#fcfcfc);border-radius:16px}.stat b{font-size:31px}.card{border-radius:18px}.tabs{gap:10px}.tabs button{min-width:116px;border-radius:11px}.filters{border-right:5px solid #d71920}.filters-title:before{content:"●";color:#d71920;font-size:11px;margin-left:7px}.kpi{box-shadow:0 5px 18px rgba(0,0,0,.045);border:0;border-top:1px solid #eee}.kpi b{font-size:34px}.admin-section{box-shadow:0 5px 18px rgba(0,0,0,.04)}button{transition:.18s ease}button:hover{transform:translateY(-1px)}
+@media(max-width:760px){.st-header{min-height:auto;gap:12px}.st-lockup{gap:8px}.st-program-name{display:none}.st-wordmark{font-size:18px;min-width:145px;padding-right:50px}.sbf-lockup{max-width:190px;height:45px}.sbf-lockup img{max-height:40px}}
+</style></head>
+<body><header class="st-header">
+  <div class="st-lockup">
+    <div class="st-wordmark"><span>SHUTTLE</span><span>TIME</span><em>SAUDI ARABIA</em></div>
+    <div class="st-program-name"><b>برنامج وقت الريشة بالمدارس</b><small>SHUTTLE TIME SCHOOLS PROGRAM 2026</small></div>
+  </div>
+  <div class="sbf-lockup"><img src="https://badminton.sa/ar/wp-content/uploads/2023/03/SBF-0Logo.png" alt="الاتحاد السعودي للريشة الطائرة"></div>
+</header><main class="wrap">
 <section id="login" class="card"><h2>تسجيل الدخول</h2><p>أدخل البريد الإلكتروني. سيصلك رابط آمن للدخول بدون كلمة مرور.</p><input id="email" type="email" placeholder="email@example.com"><button class="p" onclick="magic()">إرسال رابط الدخول</button><div id="loginMsg"></div></section>
 <section id="app" class="hidden"><div class="admin-hero"><div><h2>مشروع برنامج وقت الريشة بالمدارس 2026</h2><p class="hero-en">Shuttle Time Schools Program 2026</p><div id="scope"></div></div><div class="account-chip"><span>حساب الإدارة</span><button class="s" onclick="logout()">تسجيل الخروج</button></div></div>
 <div class="grid"><div class="stat">المدارس<b id="kSchools">—</b></div><div class="stat">الطلاب المسجلون<b id="kStudents">—</b></div><div class="stat">الحصص المنفذة<b id="kSessions">—</b></div><div class="stat">مؤهلون للأكاديمية<b id="kTalent">—</b></div></div>
