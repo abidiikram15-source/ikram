@@ -68,6 +68,14 @@ input,select,textarea{background:#fff;border-color:#d9dade;border-radius:11px;pa
 .st-wordmark em{background:transparent!important;color:#fff!important;border-color:#fff!important}
 .st-program-name{border-right:1px solid rgba(255,255,255,.24)}
 @media(max-width:760px){.st-wordmark{padding:12px 55px 12px 4px!important}}
+</style><style>
+/* Balance header identity across the full width */
+.st-header{direction:ltr!important}
+.st-lockup{width:100%!important;display:grid!important;grid-template-columns:auto 1fr!important;align-items:center!important;gap:0!important;direction:ltr!important}
+.st-wordmark{grid-column:1!important;justify-self:start!important;direction:ltr!important;margin-left:0!important}
+.st-program-name{grid-column:2!important;justify-self:end!important;text-align:right!important;direction:rtl!important;border-right:0!important;border-left:1px solid rgba(255,255,255,.24)!important;padding-right:0!important;padding-left:28px!important;margin-right:0!important}
+.st-program-name small{text-align:right!important}
+@media(max-width:760px){.st-lockup{display:flex!important;justify-content:space-between!important}.st-program-name{display:block!important;padding-left:12px!important}.st-program-name b{font-size:14px!important}.st-program-name small{font-size:8px!important}.st-wordmark{font-size:18px!important}}
 </style></head>
 <body><header class="st-header">
   <div class="st-lockup">
