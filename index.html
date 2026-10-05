@@ -154,7 +154,8 @@ async function initAdmin(){
  adminRegion.innerHTML='<option value="">كل المناطق</option>'+regions.map(x=>`<option value="${x}">${x}</option>`).join('');
  adminSchoolOptions(); await loadAdminData()
 }
-function formatDateInput(el){let d=el.value.replace(/\D/g,'').slice(0,8);if(d.length>4)d=d.slice(0,2)+' / '+d.slice(2,4)+' / '+d.slice(4);else if(d.length>2)d=d.slice(0,2)+' / '+d.slice(2);el.value=d}\nfunction adminDateISO(value){const m=(value||'').match(/^\\s*(\\d{2})\\s*\\/\\s*(\\d{2})\\s*\\/\\s*(\\d{4})\\s*$/);if(!m)return '';const d=Number(m[1]),mo=Number(m[2]),y=Number(m[3]);const dt=new Date(Date.UTC(y,mo-1,d));if(dt.getUTCFullYear()!==y||dt.getUTCMonth()!==mo-1||dt.getUTCDate()!==d)return '';return `${m[3]}-${m[2]}-${m[1]}`}
+function formatDateInput(el){let d=el.value.replace(/\D/g,'').slice(0,8);if(d.length>4)d=d.slice(0,2)+' / '+d.slice(2,4)+' / '+d.slice(4);else if(d.length>2)d=d.slice(0,2)+' / '+d.slice(2);el.value=d}
+function adminDateISO(value){const m=(value||'').match(/^\s*(\d{2})\s*\/\s*(\d{2})\s*\/\s*(\d{4})\s*$/);if(!m)return '';const d=Number(m[1]),mo=Number(m[2]),y=Number(m[3]);const dt=new Date(Date.UTC(y,mo-1,d));if(dt.getUTCFullYear()!==y||dt.getUTCMonth()!==mo-1||dt.getUTCDate()!==d)return '';return `${m[3]}-${m[2]}-${m[1]}`}
 function adminSchoolOptions(){
  const r=adminRegion.value;
  const list=r?schools.filter(x=>x.regions?.name_ar===r):schools;
@@ -165,7 +166,11 @@ async function loadAdminData(){
  if(profile?.role!=='admin')return;
  let q=SB.from('session_reports').select('id,school_id,session_date,execution,note,submitted_at,schools(code,name_ar,regions(name_ar)),program_sessions(week_no,day_no,title_ar),attendance(present),evidence(id,storage_path,access_token)');
  if(adminSchool.value)q=q.eq('school_id',adminSchool.value);
- 
+ const fromRaw=adminFrom.value.trim(),toRaw=adminTo.value.trim(),fromISO=adminDateISO(fromRaw),toISO=adminDateISO(toRaw);
+ if(fromRaw&&!fromISO){adminTable.innerHTML='<div class="msg">تاريخ البداية غير صحيح. استخدمي يوم / شهر / سنة.</div>';return}
+ if(toRaw&&!toISO){adminTable.innerHTML='<div class="msg">تاريخ النهاية غير صحيح. استخدمي يوم / شهر / سنة.</div>';return}
+ if(fromISO&&toISO&&fromISO>toISO){adminTable.innerHTML='<div class="msg">تاريخ البداية يجب أن يكون قبل تاريخ النهاية.</div>';return}
+ if(fromISO)q=q.gte('session_date',fromISO);if(toISO)q=q.lte('session_date',toISO);
  let {data,error}=await q.order('session_date',{ascending:false});
  if(error){adminTable.innerHTML='<div class="msg">'+error.message+'</div>';return}
  let rows=data||[];
